@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Free Sheet</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body id="id-body">
+    <main>
+        <header>
+            <h1 class="c-title" id="id-sheettitle" contenteditable>My Tiny Sheet</h1>
+            <span>
+                <a href="#" id="id-deletesheet" class="c-addsheet" title="delete sheet"><img src="icons/delete.svg" alt="delete sheet"></a>
+                <a href="#" id="id-addsheet" class="c-addsheet" title="add new sheet"><img src="icons/new.svg" alt="new sheet"></a>
+                <a href="manage.html" id="id-manage" class="c-addsheet" title="manage"><img src="icons/manage.svg" alt="manage"></a>
+            </span>
+        </header>
+        <div id="id-menu">
+            <label title="wrap text (ctrl+w)"><input type="checkbox" id="id-menu-wrap">Wrap</label>
+            <label title="bold text (ctrl+b)"><input type="checkbox" id="id-menu-bold">Bold</label>
+        </div>
+        <div>
+            <table id="id-spreadsheet" class="c-spreadsheet">
+                <thead>
+                    <tr>
+                        <!-- Column headers (A, B, C, ...) -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be inserted here by JavaScript -->
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="c-extraline">
+            <select id="id-sheetselect"><option>...</option></select>
+            <span>sum: <span id="id-fastresults"></span></span>
+            <span><a href="#" id="id-sync-link">not synced</a></span>
+            <span><a href="#" id="id-export-link" style="display: flex; align-items: center;"><img src="icons/export.svg" style="height:16px; margin-right:5px;" alt="export"> Export</a></span>
+        </div>
+
+        <div class="c-extraline">
+            <output id="id-info-line"></output>
+        </div>
+
+        <textarea id="id-log" style="display: none;"></textarea>
+    </main>
+    <dialog id="id-dialog-export" class="c-dialog">
+        <h2>Export</h2>
+        <p>
+            Created on: <b><span id="id-date-created"></span></b><br>
+            Last modified: <b><span id="id-date-modified"></span></b><br>
+            Last downloaded: <b><span id="id-date-downloaded"></span></b><br>
+        </p>
+
+        <ul class="c-export-list">
+            <li><a href="#" id="id-download-link">Download .csv (formulas)</a></li>
+            <li><a href="#" id="id-download-link-values">Download .csv (values)</a></li>
+            <li><a href="#" id="id-download-link-json">Download .json</a></li>
+            <li><a href="#" id="id-export-sync-link">Sync: not-synched</a></li>
+        </ul>
+        <br>
+        <br>
+        <button id="id-export-dialog-close">Close</button>
+    </dialog>
+    <dialog id="id-dialog-function" class="c-dialog">
+        <div class="c-dialog-header">
+            Function Builder
+        </div>
+        <button id="id-dialog-function-close">Close</button>
+    </dialog>
+    <script src="js/nanoajax.min.js"></script>
+    <script src="js/undo.js"></script>
+    <script src="js/meta.js"></script>
+    <script src="js/sync.js"></script>
+    <script src="js/export.js"></script>
+    <script src="js/ranger.js"></script>
+    <script src="js/actions.js"></script>
+    <script src="js/log.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/calculate.js"></script>
+    <script src="js/sheet.js"></script>
+    <script src="js/keys.js"></script>
+    <script src="js/cells.js"></script>
+    <script src="js/spreadsheet.js"></script>
+</body>
+</html>

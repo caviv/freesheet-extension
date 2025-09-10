@@ -1,0 +1,61 @@
+
+header {display: flex; justify-content: space-between;}
+header .c-addsheet {font-size: 50px; text-decoration: none;}
+header .c-addsheet img {height: 30px; border-radius: 10px;}
+header .c-addsheet > img:hover, header .c-trashbin >img:focus {background-color: wheat; }
+
+.c-title {border: 1px solid transparent; transition: all 0.2s;}
+.c-title:hover, .c-title:focus {border: 1px solid rgb(200,200,200); cursor: text; background-color: wheat; padding-right: 10px;}
+
+
+
+.c-spreadsheet {border-collapse: collapse; border: 1px solid rgb(220,220,220); user-select: none;}
+.c-spreadsheet th {font-weight: lighter; color: rgb(50,50,50);}
+.c-spreadsheet td, .c-spreadsheet th {border: 1px solid rgb(220,220,220); min-width: 50px; white-space: nowrap; padding: 1px;} /* font-size: 110%; */
+/* .c-spreadsheet td:hover {background-color: wheat;} */
+.c-spreadsheet td:focus {background-color: wheat;}
+.c-spreadsheet tfoot {background-color: whitesmoke;}
+/*
+.c-spreadsheet td > input[type="text"] {width: 90%; border: 0;}
+.c-spreadsheet td > input[type="text"]:hover {background-color: wheat;}
+.c-spreadsheet td > input[type="text"]:focus {background-color: wheat;}
+*/
+
+.c-range {background-color: lightblue;} /* used for cells of electedRange */
+.c-copy {box-shadow: inset 0 0 0 1px green;} /* used for cells of electedRange */
+.c-current {box-shadow: inset 0 0 0 2px blue;} /* used for currentCell */
+.c-current-m {background-color: whitesmoke;} /* used for current row and column */
+
+.c-dialog {}
+.c-export-list {list-style-type: square; list-style-position: inside; margin: 20px 0; padding: 0 40px;}
+.c-export-list li {
+    padding-left: 20px; /* Make space for the custom bullet */
+    margin-bottom: 15px;
+}
+
+.c-extraline {background-color: whitesmoke; margin: 5px 0; display: flex; justify-content: space-between; align-items: center;}
+.c-extraline > * {border: 1px solid rgb(220,220,220);}
+.c-extraline > *:hover, .c-extraline > *:focus {background-color: wheat;}
+#id-sheetselect {border: 0;}
+#id-fastresults {min-width: 100px; display: inline-block;}
+
+/* manage.html */
+.c-tabs {font-size: 110%; padding: 0 0 6px 0;}
+.c-tabs ul {list-style: none; margin: 0; padding: 0;}
+.c-tabs ul li {display: inline-block; margin-right: 15px; border-radius: 7px; padding: 3px 10px;}
+.c-tabs ul li a {text-decoration: none; color: gray;}
+.c-tab-selected {background-color: wheat;}
+.c-tab-selected a {color: black !important;}
+
+.c-tab {min-width: 750px; display: block;}
+
+.c-datatable {border-collapse: collapse; border: 1px solid rgb(220,220,220);}
+.c-datatable td, .c-datatable th {border: 1px solid rgb(220,220,220); white-space: nowrap; padding: 3px;} 
+.c-datatable tbody tr:hover {background: whitesmoke;}
+
+.c-login {display: flex; justify-content: space-between; align-items: center;}
+.c-login > div {width: 41%;}
+.c-login form label {width: 30%; display: inline-block;}
+.c-login form output {color: red;}
+
+#id-upload-csv-form {display: none;}

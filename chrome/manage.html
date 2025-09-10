@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Sheets</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <style>
+        header {border-bottom: 0px solid lightgray;}
+    </style>
+</head>
+<body id="id-body">
+    <header>
+        <div class="c-tabs">
+            <ul>
+                <li><a href="index.html">< Back</a></li>
+                <li class="c-tab-selected"><a href="#sheets" data-page="sheets">Sheets</a></li>
+                <li><a href="#login" data-page="login">Login</a></li>
+                <li><a href="#about" data-page="about">About</a></li>
+                <li><a href="#">Help / Documentation</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <article name="sheets" id="sheets" class="c-tab">
+            <h2>Local Tiny Sheets</h2>
+            <table class="c-datatable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>name</th>
+                        <th>created</th>
+                        <th>viewed</th>
+                        <th>modified</th>
+                        <th>downloaded</th>
+                        <th>size</th>
+                        <th>synched</th>
+                        <th>delete</th>
+                    </tr>
+                </thead>
+                <tbody id="id-sheetlist">
+                </tbody>
+            </table>
+            <br>
+            <a href="index.html#---"> + Add new sheet</a> | <a href="#" id="id-view-upload-csv"> + Upload .csv</a> | <a href="#" style="display: none;"> + Upload .json</a><br>
+            <br>
+            <form id="id-upload-csv-form">
+                <input type="file" id="id-csvfile" accept=".csv"><button id="id-loadcsv">Load CSV</button>
+            </form>
+            <br>
+            <h2>Remote Tiny Sheets</h2>
+            <table class="c-datatable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>name</th>
+                        <th>created</th>
+                        <th>viewed</th>
+                        <th>modified</th>
+                        <th>downloaded</th>
+                        <th>size</th>
+                        <th>synched</th>
+                        <th>delete</th>
+                    </tr>
+                </thead>
+                <tbody id="id-remotesheetlist">
+                </tbody>
+            </table>
+            <output id="id-output-loadremotesheet"></output>
+        </article>
+
+        <article name="login" id="login" class="c-tab" style="display: none;">
+            <h2>Login / Sign-Up</h2>
+            <section class="c-login" id="id-login-panels">
+                <div>
+                    <h3>Login</h3>
+                    <form id="id-login-form">
+                        <label for="id-login-email">email:</label> <input type="email" name="email" id="id-login-email"><br>
+                        <label for="id-login-password">password:</label> <input type="password" name="password" id="id-login-password"><br>
+                        <input type="submit" name="login" value="Login"><br>
+                        <output id="id-login-output"></output>
+                    </form>
+                </div>
+                <div>
+                    <h3>Sign-Up</h3>
+                    <p>
+                        <a href="https://freesheet.io/login-signup" target="_blank">Sign-Up</a>
+                    </p>
+                    <p>
+                        <a href="https://freesheet.io/login-signup" target="_blank">Forgot Password</a>
+                    </p>
+                </div>
+            </section>
+            <section  id="id-userinfo" style="display: none">
+                <h3>User info</h3>
+                <label>sessionId</label><br>
+                <output id="id-session-id"></output><br>
+                <br>
+                <label>email</label><br>
+                <output id="id-session-email"></output><br>
+                <br>
+                <input type="button" id="id-logout-button" value="Log Out">
+            </section>
+        </article>
+
+        <article name="about" id="about" class="c-tab" style="display: none;">
+            <h1>About Tiny Spreadsheet Extension</h1>
+            <p>
+                Tiny spreadsheet extension, is an extension that opens an Excel like tiny sheet inside your browser.
+                It allows you to sync the spreadsheet online, save data on the cloud and collaborate with others.
+                It still lacks many features, but the main functionality is already implemented. Read more about why I built it.
+            </p>
+
+            <h2>Contact me</h2>
+            <p>
+                <a href="#">Email me</a><br>
+                The main website: <a href="https://freesheet.io/">https://freesheet.io/</a><br>
+                Installing the extension:<br>
+            </p>
+            <h3>Share</h3>
+            <p>
+                Share
+            </p>
+
+            <h2>Help and Documentation</h2>
+            <p>
+                There is an online help and explenations of how to use.
+            </p>
+
+            <h2>Terms of Usage and User Agreement</h2>
+            <p>
+                TOS
+            </p>
+
+            <h3>Privacy Policy</h3>
+            <p>
+                Privacy Policy
+            </p>
+        </article>
+    </main>
+
+    <script src="js/nanoajax.min.js"></script>
+    <script src="js/cells.js"></script>
+    <script src="js/export.js"></script>
+    <script src="js/sheet.js"></script>
+    <script src="js/sync.js"></script>
+    <script src="js/meta.js"></script>
+    <script src="js/manage.js"></script>
+</body>
+</html>

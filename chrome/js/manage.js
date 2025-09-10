@@ -90,8 +90,9 @@ function buildListOfRemoteSheets() {
 
     let email     = encodeURIComponent(loginData.email);
     let sessionId = encodeURIComponent(loginData.sessionId);
+    let serverPrefix = getServerPrefix();
 
-    nanoajax.ajax({url: 'http://localhost:8080/api/sheetlist/', method: 'POST', body: `sessionId=${sessionId}&email=${email}`}, function (code, responseText, request) {
+    nanoajax.ajax({url: serverPrefix + '/api/sheetlist/', method: 'POST', body: `sessionId=${sessionId}&email=${email}`}, function (code, responseText, request) {
         try {
             let response = JSON.parse(responseText);
 
@@ -191,8 +192,9 @@ function trylogin(email, password) {
 
     email    = encodeURIComponent(email);
     password = encodeURIComponent(password);
+    let serverPrefix = getServerPrefix();
 
-    nanoajax.ajax({url: 'http://localhost:8080/api/login/', method: 'POST', body: `email=${email}&password=${password}`}, function (code, responseText, request) {
+    nanoajax.ajax({url: serverPrefix + '/api/login/', method: 'POST', body: `email=${email}&password=${password}`}, function (code, responseText, request) {
         try {
             let response = JSON.parse(responseText);
 
@@ -225,19 +227,23 @@ function logOut() {
 function displayLoginPanels() {
     // are we logged in
     let loginData = getLoginData();
-    if(loginData.sessionId) {
+    if(loginData && loginData.sessionId) {
         $$('id-login-panels').style.display = 'none';
         $$('id-userinfo').style.display = 'block';
         $$('id-session-id').innerHTML = loginData.sessionId;
-        if(loginData.email)
-            $$('id-session-email').innerHTML = loginData.email;
     } else {
         $$('id-login-panels').style.display = 'flex';
         $$('id-userinfo').style.display = 'none';
-        if(loginData.email) {
-            $$('id-login-email').value = loginData.email;
-        }
     }
+
+    if(loginData && loginData.email) {
+        $$('id-login-email').value = loginData.email; // on login screen input box
+        $$('id-session-email').innerHTML = loginData.email; // on view screen when logged in
+    }
+
+    let serverPrefix = getServerPrefix();
+    $$('id-server-prefix').value = serverPrefix; // on login
+    $$('id-connected-server').innerHTML = serverPrefix; // on view
 }
 
 // display the relevant tab
@@ -315,6 +321,11 @@ document.addEventListener('DOMContentLoaded', () => {
             reader.readAsText(file);
         }
     }, false);
+
+    $$('id-server-prefix').onchange = function(event) {
+        setServerPrefix(this.value);
+    }
+
 
     let tabs = document.querySelectorAll('.c-tabs a[data-page]');
     for(let i = 0; i < tabs.length; i++) {

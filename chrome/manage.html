@@ -92,6 +92,11 @@
                         <a href="https://freesheet.io/login-signup" target="_blank">Forgot Password</a>
                     </p>
                 </div>
+                <div>
+                    <h4>Server</h4>
+                    Server backend:<br>
+                    <select id="id-server-prefix"><option value="http://localhost:8080">localhost:8080</option><option value="https://freesheet.io">freesheet.io</option></select>
+                </div>
             </section>
             <section  id="id-userinfo" style="display: none">
                 <h3>User info</h3>
@@ -100,6 +105,9 @@
                 <br>
                 <label>email</label><br>
                 <output id="id-session-email"></output><br>
+                <br>
+                <label>server</label><br>
+                <output id="id-connected-server"></output><br>
                 <br>
                 <input type="button" id="id-logout-button" value="Log Out">
             </section>

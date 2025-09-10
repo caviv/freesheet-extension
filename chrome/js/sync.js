@@ -19,11 +19,12 @@ function initSync(sheetData, email, sessionId, sheetId, sheetTitle, resultFunc) 
 	sheetId    = encodeURIComponent(sheetId);
 	sheetTitle = encodeURIComponent(sheetTitle);
 	let lsheetData = encodeURIComponent(JSON.stringify(sheetData));
+    let serverPrefix = getServerPrefix();
 	
 	let body = `email=${email}&sessionId=${sessionId}&sheetId=${sheetId}&sheetTitle=${sheetTitle}&sheetData=${lsheetData}`;
 
 	console.log(`initSync ${sheetId}:${sessionId}`);
-	nanoajax.ajax({url: 'http://localhost:8080/api/initsync/', method: 'POST', body: body}, function (code, responseText, request) {
+	nanoajax.ajax({url: serverPrefix + '/api/initsync/', method: 'POST', body: body}, function (code, responseText, request) {
         console.log(`initSync ${sheetId}:${sessionId}:` + responseText);
         try {
             let response = JSON.parse(responseText);
@@ -47,11 +48,11 @@ function validateSessionId(email, sessionId, resultFunc) {
 
 	email     = encodeURIComponent(email);
 	sessionId = encodeURIComponent(sessionId);
-	
+	let serverPrefix = getServerPrefix();
 	let body = `email=${email}&sessionId=${sessionId}`;
 
 	console.log(`validateSessionId ${email}:${sessionId}`);
-	nanoajax.ajax({url: 'http://localhost:8080/api/validatesession/', method: 'POST', body: body}, function (code, responseText, request) {
+	nanoajax.ajax({url: serverPrefix + '/api/validatesession/', method: 'POST', body: body}, function (code, responseText, request) {
         console.log(`validateSessionId ${email}:${sessionId}:` + responseText);
         try {
             let response = JSON.parse(responseText);
@@ -85,8 +86,9 @@ function getRemoteSheet(sheetId, email, sessionId, successFunc, errorFunc) {
     email     = encodeURIComponent(email);
     sessionId = encodeURIComponent(sessionId);
     sheetId   = encodeURIComponent(sheetId);
+    let serverPrefix = getServerPrefix();
 
-    nanoajax.ajax({url: 'http://localhost:8080/api/sheetdata/', method: 'POST', body: `sessionId=${sessionId}&email=${email}&sheetId=${sheetId}`}, function (code, responseText, request) {
+    nanoajax.ajax({url: serverPrefix + '/api/sheetdata/', method: 'POST', body: `sessionId=${sessionId}&email=${email}&sheetId=${sheetId}`}, function (code, responseText, request) {
         try {
             let response = JSON.parse(responseText);
 
@@ -108,8 +110,9 @@ function deleteRemoteSheet(sheetId, email, sessionId, successFunc) {
     email     = encodeURIComponent(email);
     sessionId = encodeURIComponent(sessionId);
     sheetId   = encodeURIComponent(sheetId);
+    let serverPrefix = getServerPrefix();
 
-    nanoajax.ajax({url: 'http://localhost:8080/api/deletesheet/', method: 'POST', body: `sessionId=${sessionId}&email=${email}&sheetId=${sheetId}`}, function (code, responseText, request) {
+    nanoajax.ajax({url: serverPrefix + '/api/deletesheet/', method: 'POST', body: `sessionId=${sessionId}&email=${email}&sheetId=${sheetId}`}, function (code, responseText, request) {
         try {
             let response = JSON.parse(responseText);
 
@@ -130,3 +133,22 @@ function sendCellData(cell, data, sheetId, userId) {
 
 }
 
+
+// returns the server-prefix from the localStorage (default for https://freesheet.io)
+function getServerPrefix() {
+    let serverPrefix = localStorage['server-prefix'];
+    if(!serverPrefix) {
+        serverPrefix = 'https://freesheet.io'; // default server-prefix
+        localStorage['server-prefix'] = serverPrefix;
+    }
+
+    return serverPrefix;
+}
+
+// get a string of the server-prefix (should be https://freesheet.io or http://localhost:8080) and store in localStorage
+// serverPrefix SHOULD BE WITHOUT trailing slash
+function setServerPrefix(serverPrefix) {
+    console.log('Setting server-prefix to be:' + serverPrefix);
+    localStorage['server-prefix'] = serverPrefix;
+    return serverPrefix;
+}

@@ -53,7 +53,7 @@ header .c-addsheet > img:hover, header .c-trashbin >img:focus {background-color:
 .c-datatable td, .c-datatable th {border: 1px solid rgb(220,220,220); white-space: nowrap; padding: 3px;} 
 .c-datatable tbody tr:hover {background: whitesmoke;}
 
-.c-login {display: flex; justify-content: space-between; align-items: center;}
+.c-login {display: flex; justify-content: space-between; align-items: flex-start; }
 .c-login > div {width: 41%;}
 .c-login form label {width: 30%; display: inline-block;}
 .c-login form output {color: red;}

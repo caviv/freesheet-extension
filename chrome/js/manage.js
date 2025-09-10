@@ -244,6 +244,7 @@ function displayLoginPanels() {
     let serverPrefix = getServerPrefix();
     $$('id-server-prefix').value = serverPrefix; // on login
     $$('id-connected-server').innerHTML = serverPrefix; // on view
+    $$('id-connected-server').href = serverPrefix; // on view
 }
 
 // display the relevant tab

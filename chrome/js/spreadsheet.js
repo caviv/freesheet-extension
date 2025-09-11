@@ -1,5 +1,7 @@
 // spreadsheet.js
 
+function $$(id) {return document.getElementById(id);}
+
 // Constants for sheet dimensions
 const NUM_COLS = 10;
 const NUM_ROWS = 20;
@@ -10,17 +12,15 @@ const SHEET_STORAGE_KEY = 'simpleSheetData';
 let sheetData = newEmptySheet();
 
 // globals
-let currentCell = 'A1'; // c-current
-let allowkeys = true; // when editing the title we disable the onkeyup from the cells
+let currentCell = 'A1';      // c-current : the current cell (with blue border around it)
+let allowkeys = true;        // when editing the title we disable the onkeyup from the cells
+let selecting = null;        // when true means we are selecting with the mousedown events
+let undo = null;             // an object which holds a linked-list of undo states
+let newSelectedRange = null; // c-range : currently selected range 
+let copyRange = null;        // holds the range for copying
 
-let selecting = null; // when true means we are selecting with the mousedown events
-let newSelectedRange = null; // c-range
+let selectingFormula = null; // when true means the selection is for formula
 
-let copyRange = null;
-
-let undo = null;
-
-function $$(id) {return document.getElementById(id);}
 
 /**
  * Builds the spreadsheet grid (headers and cells).
@@ -60,9 +60,8 @@ function buildSpreadsheet() {
     // Create the events
     let allInputs = tbody.querySelectorAll('.c-editable');
     for(let i = 0; i < allInputs.length; i++) {
-        allInputs[i].onclick = function() {
-            let key = this.dataset.col + this.dataset.row;
-            consolelog(`onclick text: ${key} ${this.innerHTML}`);
+        allInputs[i].onclick = function(event) {
+            consolelog(`onclick: ${this.dataset.cor} ${this.innerHTML}`);
             
             if(event.ctrlKey) {
                 if(newSelectedRange) {
@@ -72,7 +71,21 @@ function buildSpreadsheet() {
                 }
 
                 $$('id-fastresults').innerHTML = colorTheCells(newSelectedRange.allCellsInRange(), 'c-range');
+            } else {
+                if(selectingFormula) {
+                    consolelog('onclick formulaRange ending');
+                    selectingFormula = null; // global
+                }
+
+                if(event.shiftKey) {
+                    consolelog('onmousedown: shift:' + this.id);
+                    setSelectedCells(currentCell, this.dataset.cor);
+                    return;
+                }
+
+                setCurrentCell(this.dataset.cor);
             }
+
             //clearSelectedCells();
 
             // if(document.activeElement == this)
@@ -97,6 +110,10 @@ function buildSpreadsheet() {
             this.contentEditable = false;
             let cell = this.dataset.cor;
             consolelog(`onblur text: ${cell} ${this.innerHTML}`);
+
+            if(selectingFormula) {
+                return;
+            }
 
             let val = clearCellRubbish(this.innerHTML);
             let calcval = val;
@@ -132,14 +149,6 @@ function buildSpreadsheet() {
                 if(newSelectedRange)
                     clearSelectedCells();
 
-                if(event.shiftKey) {
-                    consolelog('onmousedown: shift:' + this.id);
-                    setSelectedCells(currentCell, this.dataset.cor);
-                    return;
-                }
-
-                setCurrentCell(this.dataset.cor);
-
                 selecting = this.dataset.cor;
                 newSelectedRange = new CellRange(this.dataset.cor, this.dataset.cor);
             }
@@ -148,7 +157,18 @@ function buildSpreadsheet() {
         allInputs[i].onmouseup = function(event) {
             if (event.button === 0) { 
                 consolelog('onmouseup: ' + this.id);
-                selecting = null;
+                
+                // stop selecting formula
+                if(selecting) {
+                    if(selectingFormula) {
+                        consolelog('onmouseup formulaRange ending');
+                        selectingFormula.title = selectingFormula.innerHTML;
+                        makeCellEditable(selectingFormula, null);
+                        selectingFormula = null; // global
+                    }
+
+                    selecting = null;
+                }
             }
         }
 
@@ -157,14 +177,20 @@ function buildSpreadsheet() {
                 consolelog('onmouseover selecting: ' + this.id);
                 event.preventDefault();
                 let selectedRange = setSelectedCells(selecting, this.dataset.cor);
+                if(selectingFormula) {
+                    selectingFormula.innerHTML = selectingFormula.originalText + selectedRange.getRangeString(); // set the formulaSelecting text
+                }
             }
         }
 
         allInputs[i].onkeyup = function(event) {
-            // $$('id-fastresults').innerHTML = 'allInputs:' + event.key;
-            // if(this.innerHTML.startsWith('=')) {
-            //     $$('id-dialog-function').show();
-            // }
+            $$('id-fastresults').innerHTML = 'allInputs:' + event.key;
+            if(this.innerHTML.startsWith('=')) {
+                consolelog('onkeyup formulaRange starting');
+                this.originalText = this.innerHTML; // save the original text we had
+                selectingFormula = this; // global
+                // $$('id-dialog-function').show();
+            }
         }
 
     } // allInputs
@@ -549,7 +575,7 @@ function buildExtraEvents() {
             arrowKey(event, rightCell);
             return;
         }
-                
+        
 
         // regular key strokes - must be last
         //$$('id-fastresults').innerHTML = event.code + ':' + event.key;
@@ -674,6 +700,7 @@ function arrowKey(event, nextCellFunc) {
 }
 
 // set the current 'active' cell + update the menu
+// recieve string cell cordinates 'A5'
 // returns element of new current active cell
 function setCurrentCell(newCurrentCell) {
     let cc = cellToXY(currentCell);

@@ -197,7 +197,13 @@ function makeCellEditable(e, keycode) {
     e.contentEditable = "true";
     if(e.title.length > 0)
         e.innerHTML = e.title;
+    
+    // should we start a formula selecting
+    if(e.innerHTML.startsWith('=')) {
+        consolelog('makeCellEditable formulaRange starting');
+        e.originalText = e.innerHTML; // save the original text we had
+        selectingFormula = e; // global
+    }
+
     focusAndPlaceCursorAtEnd(e, keycode);
 }
-
-

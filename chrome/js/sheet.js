@@ -63,6 +63,9 @@ function findFirstSheet() {
 }
 
 // save the sheetData to the localStorage
+// sheetData - is the global object holding the sheetData
+// updateLastModified - true / false - if to update the sheetData.dates.modified date
+// undo - is the previous undo object of the linked list
 function saveSheetData(sheetData, updateLastModified, undo) {
     consolelog('saveSheetData: ' + sheetData.sheetId);
 

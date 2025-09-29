@@ -416,73 +416,33 @@ function buildExtraEvents() {
             event.preventDefault(); // Prevent browser's default save action
             let clipboardContents = await navigator.clipboard.read();
 
-            if(copyRange) {
-                // create a new range to paste the data
-                let offsetRange = copyRange.newOffset(currentCell);
-                
-                // iterate over the copyRange
-                let data   = [];
-                let styles = [];
-                let cCell  = null;
-                while(cCell = copyRange.iteratore(cCell)) {
-                    if(cCell in sheetData.cells)
-                        data.push(sheetData.cells[cCell]);
-                    else
-                        data.push(null);
+            if(clipboardContents) {
+                // delete the cut
+                if(copyRange) {
+                    let cCell = null;
+                    while(cCell = copyRange.iteratore(cCell)) {
+                        // if(cCell in sheetData.cells)
+                        //     data.push(sheetData.cells[cCell]);
+                        // else
+                        //     data.push(null);
 
-                    if(cCell in sheetData.cellsStyles)
-                        styles.push(sheetData.cellsStyles[cCell]);
-                    else
-                        styles.push(null);
+                        // if(cCell in sheetData.cellsStyles)
+                        //     styles.push(sheetData.cellsStyles[cCell]);
+                        // else
+                        //     styles.push(null);
 
-                    if(copyRange.cut === true) {
-                        $$(`id-${cCell}`).innerHTML = '';
-                        delete sheetData.cells[cCell];
-                    }
-                }
-
-                // iterate over the offsetRange (paste area)
-                let i = 0;
-                let oCell = null;
-                while(oCell = offsetRange.iteratore(oCell)) {
-                    let v = data[i];
-                    let s = styles[i];
-
-                    if(v !== null)
-                        sheetData.cells[oCell] = v;
-                    else if(oCell in sheetData.cells)
-                        delete sheetData.cells[oCell];
-
-                    if(s !== null)
-                        sheetData.cellsStyles[oCell] = s;
-                    else if(oCell in sheetData.cellsStyles)
-                        delete sheetData.cellsStyles[oCell];
-
-                    // copy the cell
-                    let o = $$(`id-${oCell}`);
-                    if(o) {
-                        if(v !== null) {
-                            o.innerHTML = v;
-                            o.title = v;
-                        } else {
-                            o.innerHTML = '';
-                        }
-                        if(s !== null) {
-                            o.style = s;
+                        if(copyRange.cut === true) {
+                            $$(`id-${cCell}`).innerHTML = '';
+                            delete sheetData.cells[cCell];
+                            delete sheetData.cellsStyles[cCell];
                         }
                     }
 
-                    i++;
-                }
-
-                if(copyRange.cut) {
-                    delete copyRange.cut;
+                    // global copyRange
                     unColorTheCells(copyRange.allCellsInRange(), 'c-copy');
-                    copyRange = null; // global
-                }
+                    copyRange = null;  // global
+                } // if(copyRange)
 
-                undo = saveSheetData(sheetData, true, undo);
-            } else if(clipboardContents) {
                 for (const item of clipboardContents) {
                     let text = null;
                     // if(item.types.includes("text/html")) {
@@ -513,7 +473,7 @@ function buildExtraEvents() {
 
                         undo = saveSheetData(sheetData, true, undo);
                     }
-                }
+                } // for
             }
 
             return;

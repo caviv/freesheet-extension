@@ -830,8 +830,14 @@ function loadSheetData(sheetId) {
         if(loginData.email && loginData.sessionId && sheetData.remoteSheetId) {
             getRemoteSheet(sheetData.sheetId, loginData.email, loginData.sessionId, function(sheetId, remoteSheetData) {
                 console.log(`loadSheetData received remoteSheetData sheetId:${sheetId}`);
-                sheetData = upgradeSheetToLatestVersion(remoteSheetData); // global
-                drawSheetData(sheetData); // put the sheetData on the DOM
+                let newSheetData = upgradeSheetToLatestVersion(remoteSheetData);
+                if(newSheetData.dates.modified > sheetData.dates.modified) {
+                    consolelog(`loadSheetData: server sheet modified is newer - updating the sheet. server: ${newSheetData.dates.modified} vs current: ${sheetData.dates.modified}`)
+                    sheetData = newSheetData; // global set the new sheet data
+                    drawSheetData(sheetData); // put the sheetData on the DOM
+                } else {
+                    consolelog(`loadSheetData: server sheet modified is older - NOT updating. server: ${newSheetData.dates.modified} vs current: ${sheetData.dates.modified}`)
+                }
                 updateSyncView(sheetData.remoteSheetId); // shows the sync / not sync indication
             }, function(sheetId, error) {
                 $$('id-info-line').innerHTML = 'Error loading remote sheet data: ' + error;

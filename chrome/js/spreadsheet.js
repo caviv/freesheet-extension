@@ -19,8 +19,6 @@ let undo = null;             // an object which holds a linked-list of undo stat
 let newSelectedRange = null; // c-range : currently selected range 
 let copyRange = null;        // holds the range for copying
 
-let selectingFormula = null; // holds the DOM original cell we are editing when selecting formula edit
-
 
 /**
  * Builds the spreadsheet grid (headers and cells).
@@ -72,11 +70,6 @@ function buildSpreadsheet() {
 
                 $$('id-fastresults').innerHTML = colorTheCells(newSelectedRange.allCellsInRange(), 'c-range');
             } else {
-                if(selectingFormula) {
-                    consolelog(`onclick selectingFormula adding: ${this.dataset.cor}`);
-                    selectingFormula.innerHTML = selectingFormula.originalText + this.dataset.cor; // set the formulaSelecting text
-                }
-
                 if(event.shiftKey) {
                     consolelog('onmousedown: shift:' + this.id);
                     setSelectedCells(currentCell, this.dataset.cor);
@@ -102,20 +95,10 @@ function buildSpreadsheet() {
             if(document.activeElement == this)
                 return;
 
-            if(selectingFormula) {
-                consolelog("ondblclick selectingFormula ending");
-                selectingFormula = null;
-            }
-
             makeCellEditable(this, null);
         }
 
         allInputs[i].onblur = function() {
-            if(selectingFormula) {
-                consolelog(`onblur selectingFormula is on - returning`);
-                return;
-            }
-
             //delete this.contentEditable; //
             this.contentEditable = false;
             let cell = this.dataset.cor;
@@ -164,14 +147,8 @@ function buildSpreadsheet() {
             if (event.button === 0) { 
                 consolelog('onmouseup: ' + this.id);
                 
-                // stop selecting formula
+                // stop selecting
                 if(selecting) {
-                    if(selectingFormula) {
-                        consolelog('onmouseup formulaRange selecting');
-                        // selectingFormula.originalText = selectingFormula.innerHTML;
-                        makeCellEditable(selectingFormula, null); // returning to edit the original cell
-                    }
-
                     selecting = null;
                 }
             }
@@ -181,24 +158,11 @@ function buildSpreadsheet() {
             if(selecting) {
                 consolelog('onmouseover selecting: ' + this.id);
                 event.preventDefault();
-                let selectedRange = setSelectedCells(selecting, this.dataset.cor);
-                if(selectingFormula) {
-                    selectingFormula.innerHTML = selectingFormula.originalText + selectedRange.getRangeString(); // set the formulaSelecting text
-                }
             }
         }
 
         allInputs[i].onkeyup = function(event) {
             $$('id-fastresults').innerHTML = 'allInputs:' + event.key;
-            if(this.innerHTML.startsWith('=') && !selectingFormula) {
-                consolelog('onkeyup formulaRange starting');
-                this.originalText = this.innerHTML; // save the original text we had
-                selectingFormula = this; // global
-                // $$('id-dialog-function').show();
-            } else if (!this.innerHTML.startsWith('=')) {
-                consolelog('onkeyup formulaRange ending');
-                selectingFormula = null; // global
-            }
         }
 
     } // allInputs

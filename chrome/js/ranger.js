@@ -380,9 +380,10 @@ function clearSelectedCells() {
     if(newSelectedRange) {
         unColorTheCells(newSelectedRange.allCellsInRange(), 'c-range');
     }
-    newSelectedRange = null;
-
+    
     $$('id-fastresults').innerHTML = '';
+
+    return newSelectedRange = null; // returns null
 }
 
 // set range range (global newSelectedRange)

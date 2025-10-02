@@ -18,8 +18,7 @@ function getAllCellsInRange(start, end) {
     let min = minCell(start, end);
     let max = maxCell(start, end);
 
-    consolelog('getAllCellsInRange start:' + start + ' end:' + end);
-    consolelog('getAllCellsInRange min:' + min + ' max:' + max);
+//    consolelog('getAllCellsInRange start:' + start + ' end:' + end + ' min:' + min + ' max:' + max);
 
     let a = [min];
     let c = nextCell(min, min, max);
@@ -199,10 +198,13 @@ function makeCellEditable(e, keycode) {
         e.innerHTML = e.title;
     
     // should we start a formula selecting
-    if(e.innerHTML.startsWith('=')) {
+    if(e.innerHTML.startsWith('=') && !selectingFormula) {
         consolelog('makeCellEditable formulaRange starting');
         e.originalText = e.innerHTML; // save the original text we had
         selectingFormula = e; // global
+    } else if (!e.innerHTML.startsWith('=') && selectingFormula) {
+        consolelog('makeCellEditable formulaRange eding');
+        selectingFormula = null; // global
     }
 
     focusAndPlaceCursorAtEnd(e, keycode);

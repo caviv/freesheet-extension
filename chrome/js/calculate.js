@@ -30,7 +30,7 @@ function calculateAll(sheetData) {
 // cellsStack is and array with cell coordinates adding each recursive call to prevent circular references
 // This function throws Error exception
 function calculateCellValue(cell, cellsStack) {
-    consolelog(`calculateCellValue: ${cell}`);
+//    consolelog(`calculateCellValue: ${cell}`);
     if (cellsStack.length > 20) {
         throw new Error(`#ERROR: no more than 20 recursive ${cell}`);
     }
@@ -76,7 +76,7 @@ function calculateCellValue(cell, cellsStack) {
 
         formula += token;
     }
-    consolelog(`calculateCellValue formula(${cell}): ` + formula);
+//    consolelog(`calculateCellValue formula(${cell}): ` + formula);
 
     try {
 	   return evaluateMathFormula(formula);

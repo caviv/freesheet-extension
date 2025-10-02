@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Simple Free Sheet Extension",
-  "version": "1.0",
-  "description": "A Chrome extension that opens a pop-up window with a tiny Excel-like spread sheet",
+  "name": "My Tiny Sheet Extension",
+  "version": "0.91",
+  "description": "A Chrome extension that opens a pop-up window with a tiny Excel-like spreadsheet that runs in your browser and allows syncing",
   "action": {
     "default_popup": "index.html",
     "default_icon": {
@@ -30,4 +30,3 @@
     "https://www.freesheet.io/*"
   ]
 }
-

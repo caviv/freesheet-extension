@@ -158,6 +158,7 @@ function buildSpreadsheet() {
             if(selecting) {
                 consolelog('onmouseover selecting: ' + this.id);
                 event.preventDefault();
+                setSelectedCells(selecting, this.dataset.cor);
             }
         }
 

@@ -48,14 +48,25 @@ function validateSessionId(email, sessionId, resultFunc) {
 
 	email     = encodeURIComponent(email);
 	sessionId = encodeURIComponent(sessionId);
+
+    var manifestData = chrome.runtime.getManifest();
+    var extensionVersion = manifestData.version;
+    var extensionName = manifestData.name;
+
 	let serverPrefix = getServerPrefix();
-	let body = `email=${email}&sessionId=${sessionId}`;
+	let body = `email=${email}&sessionId=${sessionId}&extensionName=${extensionName}&extensionVersion=${extensionVersion}`;
+
+    console.log(`validateSessionId Extension manifest data: ${extensionName} ${extensionVersion}`);
 
 	console.log(`validateSessionId ${email}:${sessionId}`);
 	nanoajax.ajax({url: serverPrefix + '/api/validatesession/', method: 'POST', body: body}, function (code, responseText, request) {
         console.log(`validateSessionId ${email}:${sessionId}:` + responseText);
         try {
             let response = JSON.parse(responseText);
+
+            if(response.latestExtensionVersion) {
+                // TODO: compare latest version to this version of extension
+            }
 
             if(response.success) {
            		resultFunc(true);

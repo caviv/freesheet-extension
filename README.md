@@ -1,2 +1,28 @@
-# freesheet-extension
-My Tiny Sheet extension by freesheet.io - a small flexible Spread Sheet that runs inside your browser and allows to write notes and calculate easily with the option to sync online sheets. ( https://freesheet.io )
+
+# My Tiny Sheet Extension
+
+A spreadsheet that lives in your browser as an extension
+
+- A small spreadsheet
+- Data is saved locally
+- Open source
+- Useful for quick calculations and sofisticated note taking
+- Cloud synchornizing and exporting is avaliable 
+
+ 
+
+
+
+
+## Demo
+
+https://www.youtube.com/embed/PHX4hjkdwmQ?si=owzqIWqvul3EVFCS
+
+
+## Installation
+
+[Main website - freesheet.io](https://freesheet.io/)
+
+[Install from Google Web Store for Chrome](https://chromewebstore.google.com/detail/my-tiny-sheet-extension/kbemimbmggpdclhdhohfiiejcmanogen)
+
+    
